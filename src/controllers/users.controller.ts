@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import {
   createUsers,
+  deleteUsers,
   getUsers,
   getUsersById,
   getUsersByUsername,
+  updateUsersServices,
 } from '../services/users.services';
 import bcrypt from 'bcrypt';
 import { UsersSchemas } from '../schemas/users.schemas';
@@ -89,6 +91,27 @@ export const loginUsers = async (
   }
 };
 
+export const updateUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = (req as any).user.id;
+    const { id } = req.params;
+    const body = req.body;
+    // if (!userId) {
+    //   res.status(400).json({ message: 'Unauthorize' });
+    //   return;
+    // }
+
+    const data = await updateUsersServices(id, body);
+    res.status(200).json({ message: 'success', data });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const userAuthCheck = async (
   req: Request,
   res: Response,
@@ -106,6 +129,20 @@ export const userAuthCheck = async (
 
     const { password: unUsedPassword, ...userData } = checkData;
     res.status(200).json({ message: 'success', data: { ...userData } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUsersControllers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = (req as any).user.id;
+    const data = await deleteUsers(userId);
+    res.status(200).json({ message: 'deleted', data });
   } catch (error) {
     next(error);
   }

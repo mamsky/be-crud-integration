@@ -26,7 +26,7 @@ export const createUsers = async (data: UsersSchemas) => {
   });
 };
 
-export const updateUsers = async (id: string, data: UsersTypes) => {
+export const updateUsersServices = async (id: string, data: UsersTypes) => {
   return await prisma.users.update({
     where: {
       id,

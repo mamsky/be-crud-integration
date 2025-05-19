@@ -3,6 +3,8 @@ import express from 'express';
 const app = express();
 
 import usersRoutes from './routes/users.routes';
+import threadsRoutes from './routes/threads.routes';
+import { errorHandler } from './middlewares/error.handler';
 
 app.use(express.json());
 app.use(
@@ -13,5 +15,7 @@ app.use(
 );
 
 app.use('/users', usersRoutes);
+app.use('/threads', threadsRoutes);
+app.use(errorHandler);
 
 export default app;
